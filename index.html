@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HoodTech – Tecnología y moda urbana</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#000;--card:#111;--line:#2a2a2a;--txt:#f2efe9;--mut:#9a968f;--red:#d6001c;--gold:#c9a24a}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--txt);font:400 16px/1.5 Inter,"Segoe UI",Arial,sans-serif}
+h1,h2,h3,.logo,.btn{font-family:Sora,"Segoe UI",sans-serif;font-weight:700}
+a{color:inherit;text-decoration:none}
+.promo{background:var(--red);text-align:center;padding:8px;font-weight:600;font-size:14px}
+header{position:sticky;top:0;z-index:5;background:#000e;backdrop-filter:blur(8px);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:14px 5vw}
+.logo{font-size:22px;letter-spacing:.06em}
+nav{display:flex;gap:22px;font-size:14px}
+nav a:hover{color:var(--gold)}
+.cartbtn{background:none;border:1px solid var(--txt);color:var(--txt);padding:8px 14px;cursor:pointer;font:600 14px Inter,sans-serif}
+.hero{padding:12vh 5vw 10vh;max-width:1100px}
+.hero h1{font-size:clamp(38px,7vw,84px);line-height:1.04;letter-spacing:-.035em;text-transform:none}
+.hero p{max-width:520px;color:var(--mut);margin:22px 0 30px;font-size:18px}
+.btn{display:inline-block;background:var(--txt);color:#000;border:0;padding:14px 28px;cursor:pointer;font-size:15px;text-transform:uppercase}
+.btn:hover{background:var(--gold)}
+.btn.red{background:var(--red);color:#fff}
+section{padding:0 5vw 70px}
+.bar{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 28px}
+.chip{background:none;border:1px solid var(--line);color:var(--txt);padding:9px 16px;cursor:pointer;font:600 14px Inter,sans-serif}
+.chip.on{background:var(--txt);color:#000}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px}
+.card{background:var(--card);border:1px solid var(--line);display:flex;flex-direction:column}
+.img{aspect-ratio:1;display:grid;place-items:center;font-size:64px;background:linear-gradient(135deg,#1c1c1c,#050505);position:relative}
+.img img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.tag{position:absolute;top:10px;left:10px;background:var(--red);font:600 12px Inter,sans-serif;padding:3px 8px;z-index:1}
+.info{padding:16px;display:flex;flex-direction:column;gap:6px;flex:1}
+.info small{color:var(--mut)}
+.info h3{font-size:15px;line-height:1.25}
+.price{margin-top:auto;padding-top:8px}
+.price s{color:var(--mut);margin-right:8px;font-size:14px}
+.price b{color:var(--gold);font-size:19px}
+.card .btn{width:100%;padding:12px;font-size:13px}
+.why{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:30px;border-top:1px solid var(--line);padding-top:50px}
+.why h3{font-size:18px;margin-bottom:8px}
+.why p{color:var(--mut)}
+footer{border-top:1px solid var(--line);padding:40px 5vw;color:var(--mut);font-size:14px}
+#drawer{position:fixed;top:0;right:0;height:100%;width:min(400px,100%);background:#0c0c0c;border-left:1px solid var(--line);z-index:10;transform:translateX(100%);transition:transform .4s cubic-bezier(.22,.8,.25,1);display:flex;flex-direction:column;padding:20px}
+#drawer.open{transform:none}
+#items{flex:1;overflow:auto;margin:16px 0}
+.row{display:flex;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid var(--line);font-size:14px}
+.row button{background:none;border:0;color:var(--red);cursor:pointer;font-size:13px}
+.total{display:flex;justify-content:space-between;font-size:20px;margin-bottom:14px}
+.empty{color:var(--mut)}
+html{scroll-behavior:smooth}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px;margin-bottom:36px}
+.tile{--a:#fff;background:var(--card);border:1px solid var(--line);border-bottom:4px solid var(--a);padding:20px 16px;cursor:pointer;color:var(--txt);text-align:left;font:inherit;transition:transform .3s ease,background .3s ease,color .3s ease,box-shadow .3s ease}
+.tile:hover{transform:translateY(-4px);background:#1a1a1a}
+.tile.on{background:var(--a);color:#000;box-shadow:0 12px 30px -12px var(--a)}
+.tile svg{width:54px;height:54px;display:block;margin-bottom:12px;pointer-events:none}
+.tile h3{font-size:18px;pointer-events:none}.tile small{opacity:.7;pointer-events:none}
+.card{--a:#fff;border-top:3px solid var(--a);animation:in .5s ease both;animation-delay:calc(var(--k,0)*45ms);transition:transform .35s ease,box-shadow .35s ease}
+.card:hover{transform:translateY(-6px);box-shadow:0 16px 32px -16px var(--a)}
+.card .img svg{width:76%;height:76%;transition:transform .5s ease}
+.card:hover .img svg{transform:scale(1.08)}
+.catb{color:var(--a);font-weight:600}
+.sec{grid-column:1/-1;display:flex;align-items:center;gap:14px;margin-top:20px}
+.sec h2{font-size:28px;color:var(--a)}.sec i{flex:1;height:2px;background:var(--a);opacity:.35}
+@keyframes in{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.btn,.cartbtn{transition:background .25s ease,color .25s ease,transform .2s ease}
+.btn:active{transform:scale(.97)}
+#ov{position:fixed;inset:0;background:#000a;opacity:0;pointer-events:none;transition:opacity .35s ease;z-index:9}
+#ov.on{opacity:1;pointer-events:auto}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+@media(max-width:700px){nav{display:none}}
+@media(prefers-reduced-motion:reduce){#drawer{transition:none}}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:linear-gradient(180deg,#fff,#d9d5cc);color:#000;border:0;border-radius:12px;padding:15px 30px;font:600 15px Sora,"Segoe UI",sans-serif;letter-spacing:.3px;text-transform:none;box-shadow:0 6px 18px -6px #ffffff44,inset 0 1px 0 #fff;transition:transform .25s ease,box-shadow .25s ease,background .25s ease,color .25s ease}
+.btn:hover{background:linear-gradient(180deg,#e8c97e,var(--gold));transform:translateY(-2px);box-shadow:0 12px 26px -8px var(--gold)}
+.btn:active{transform:translateY(0) scale(.98)}
+.btn.ghost{background:transparent;color:var(--txt);box-shadow:inset 0 0 0 1.5px #ffffff55}
+.btn.ghost:hover{background:#ffffff14;box-shadow:inset 0 0 0 1.5px var(--txt)}
+.btn.wa{background:#25d366;color:#04210f;width:100%;box-shadow:0 8px 22px -8px #25d366aa}
+.btn.wa:hover{background:#3ee97d;box-shadow:0 12px 28px -8px #25d366}
+.hero .btns{display:flex;flex-wrap:wrap;gap:12px}
+.card .btn{width:auto;margin:0 16px 16px;padding:12px 16px;font-size:13px;background:transparent;color:var(--a);box-shadow:inset 0 0 0 1.5px var(--a)}
+.card .btn:hover{background:var(--a);color:#000;box-shadow:0 10px 22px -10px var(--a)}
+.cartbtn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:999px;padding:9px 16px;background:#ffffff14;box-shadow:inset 0 0 0 1px #ffffff33;color:var(--txt);font:600 14px Inter,sans-serif;cursor:pointer;transition:background .25s ease,box-shadow .25s ease}
+.cartbtn:hover{background:#ffffff26;box-shadow:inset 0 0 0 1px var(--gold)}
+.cartbtn b{background:var(--gold);color:#000;border-radius:999px;min-width:22px;padding:0 6px;font:600 13px Inter,sans-serif;text-align:center}
+.row button{border-radius:8px;padding:4px 10px;transition:background .2s}
+.row button:hover{background:#d6001c22}
+.chip{border-radius:999px;transition:background .25s ease,color .25s ease,border-color .25s ease}.chip:hover{border-color:var(--txt)}#subs:empty{display:none}
+.sz{margin:0 16px 10px;background:#000;color:var(--txt);border:1px solid var(--line);border-radius:10px;padding:10px;font:600 14px Inter,sans-serif}.more{grid-column:1/-1;text-align:center;margin-top:6px}
+.search{position:relative;max-width:560px;margin-bottom:26px}
+.search svg{position:absolute;left:18px;top:50%;transform:translateY(-50%);color:var(--mut);pointer-events:none}
+.search input{width:100%;-webkit-appearance:none;appearance:none;background:var(--card);color:var(--txt);border:1px solid var(--line);border-radius:999px;padding:14px 46px;font:400 16px Inter,"Segoe UI",Arial,sans-serif;transition:border-color .25s ease,box-shadow .25s ease}
+.search input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 4px #c9a24a22}
+.search button{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:#ffffff1a;color:var(--txt);border:0;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:18px;line-height:1;transition:background .2s}
+.search button:hover{background:#ffffff33}.search button[hidden]{display:none}
+.res{grid-column:1/-1;color:var(--mut)}
+.none{grid-column:1/-1;text-align:center;padding:40px 0;color:var(--mut);display:flex;flex-direction:column;align-items:center;gap:16px}
+.note{margin-top:46px;border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:14px;background:var(--card);padding:22px 24px;display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between}
+.note h3{font-size:18px;margin-bottom:6px}.note p{color:var(--mut);max-width:640px}
+.dnote{color:var(--mut);font-size:13px;margin:0 0 12px}
+.ask{color:var(--gold);font-weight:600;font-size:14px}
+.card .btn.solid{background:var(--a);color:#000;box-shadow:none;margin-bottom:6px}
+.card .btn.solid:hover{background:var(--a);filter:brightness(1.12);box-shadow:0 10px 22px -10px var(--a)}
+.addlink{background:none;border:0;color:var(--mut);font:500 13px Inter,sans-serif;padding:2px 16px 16px;cursor:pointer;text-align:center;transition:color .2s ease}
+.addlink:hover{color:var(--txt)}
+</style>
+</head>
+<body>
+<div class="promo">Precios y disponibilidad por WhatsApp · Envíos a todo México</div>
+<header>
+  <a class="logo" href="#">HOODTECH</a>
+  <nav><a href="#tienda" data-go="Todo">Tienda</a><a href="#tienda" data-go="Apple">Apple</a><a href="#tienda" data-go="Laptops">Laptops</a><a href="#tienda" data-go="Ropa">Ropa</a></nav>
+  <button class="cartbtn" id="open"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1 12H7z"/><path d="M9 8a3 3 0 016 0"/></svg>Mi cotización <b id="count">0</b></button>
+</header>
+
+<div class="hero">
+  <h1>Tecnología y moda urbana, con garantía</h1>
+  <p>Equipos Apple, Google Pixel, Lenovo y HP, además de sudaderas Essentials y STWD. Productos originales, atención directa y envíos a todo el país.</p>
+  <div class="btns"><a class="btn" href="#tienda">Ver catálogo</a><a class="btn ghost" href="#" id="cot">Cotizar por WhatsApp</a></div>
+</div>
+
+<section id="tienda">
+  <div class="search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="q" type="search" placeholder="Buscar modelo, por ejemplo: iPhone 15 Pro 256" aria-label="Buscar productos" autocomplete="off"><button id="qx" aria-label="Borrar búsqueda" hidden>×</button></div>
+  <div class="tiles" id="filters"></div>
+  <div class="bar" id="subs"></div>
+  <div class="grid" id="grid"></div>
+  <div class="note"><div><h3>Consulta precio y disponibilidad</h3><p>Los precios cambian con frecuencia y las existencias que ves en esta página son de referencia, no reflejan el inventario real. Envíanos un mensaje con el modelo y la capacidad que te interesan y te confirmamos precio y disponibilidad. Nosotros te contactamos para continuar con tu pedido.</p></div><button class="btn" data-ask="1">Preguntar precio y disponibilidad</button></div>
+</section>
+
+<section>
+  <div class="why">
+    <div><h3>Productos originales</h3><p>Equipos nuevos y sellados, con garantía del fabricante.</p></div>
+    <div><h3>Envíos a todo México</h3><p>Todos los pedidos salen con número de guía para que des seguimiento.</p></div>
+    <div><h3>Atención personalizada</h3><p>Resolvemos tus dudas y confirmamos tu pedido directamente por WhatsApp.</p></div>
+  </div>
+</section>
+
+<footer>© 2026 HoodTech. Todos los derechos reservados. Atención por WhatsApp de lunes a sábado.</footer>
+
+<div id="ov"></div>
+<aside id="drawer" aria-label="Cotización">
+  <div style="display:flex;justify-content:space-between;align-items:center"><h2 style="font-size:22px">Tu cotización</h2><button class="cartbtn" id="close">Cerrar</button></div>
+  <div id="items"></div>
+  <p class="dnote">Te enviaremos los precios y la disponibilidad de estos productos por WhatsApp.</p>
+  <button class="btn wa" id="send">Solicitar precios por WhatsApp</button>
+</aside>
+
+<script>
+// ====== EDITA AQUÍ ======
+var WHATSAPP = "525619113001"; // +52 56 1911 3001
+// Para poner foto real: agrega img:"fotos/archivo.jpg" al producto
+var PRODUCTOS = [
+ {n:"Lenovo IdeaPad Slim 5",c:"Laptops",e:"💻"},
+ {n:"Lenovo ThinkPad E14",c:"Laptops",e:"💻"},
+ {n:"Lenovo Legion 5",c:"Laptops",e:"💻"},
+ {n:"HP Pavilion 15",c:"Laptops",e:"💻"},
+ {n:"HP Victus 16",c:"Laptops",e:"💻"},
+];
+function addP(c,list){list.forEach(function(m){m[1].forEach(function(g){PRODUCTOS.push({n:m[0]+" "+(g>=1024?g/1024+" TB":g+" GB"),c:c})})})}
+// [nombre, capacidades en GB]
+addP("Apple",[["iPhone 17 Pro Max",[256,512,1024,2048]],["iPhone 17 Pro",[256,512,1024]],["iPhone Air",[256,512,1024]],["iPhone 17",[256,512]],
+["iPhone 16 Pro Max",[256,512,1024]],["iPhone 16 Pro",[128,256,512,1024]],["iPhone 16 Plus",[128,256,512]],["iPhone 16",[128,256,512]],
+["iPhone 15 Pro Max",[256,512,1024]],["iPhone 15 Pro",[128,256,512,1024]],["iPhone 15 Plus",[128,256,512]],["iPhone 15",[128,256,512]],
+["iPhone 14 Pro Max",[128,256,512,1024]],["iPhone 14 Pro",[128,256,512,1024]],["iPhone 14 Plus",[128,256,512]],["iPhone 14",[128,256,512]]]);
+addP("Apple",[['MacBook Neo 13" A18 Pro',[256,512]],['MacBook Air 13" M5',[512,1024,2048]],['MacBook Air 15" M5',[512,1024,2048]],['MacBook Pro 14" M5',[512,1024,2048]],
+['MacBook Pro 14" M5 Pro',[1024,2048,4096]],['MacBook Pro 16" M5 Pro',[1024,2048,4096]],['MacBook Pro 14" M5 Max',[2048,4096,8192]],['MacBook Pro 16" M5 Max',[2048,4096,8192]],
+['Mac mini M4',[256,512,1024]],['iMac 24" M4',[256,512,1024]]]);
+addP("Apple",[['iPad 11" A16',[128,256,512]],['iPad mini A17 Pro',[128,256,512]],['iPad Air 11" M4',[128,256,512,1024]],['iPad Air 13" M4',[128,256,512,1024]],
+['iPad Pro 11" M5',[256,512,1024,2048]],['iPad Pro 13" M5',[256,512,1024,2048]]]);
+addP("Celulares",[["Google Pixel 10 Pro XL",[256,512,1024]],["Google Pixel 10 Pro",[128,256,512,1024]],["Google Pixel 10",[128,256]],["Google Pixel 10 Pro Fold",[256,512,1024]],
+["Google Pixel 9 Pro XL",[128,256,512,1024]],["Google Pixel 9 Pro",[128,256,512,1024]],["Google Pixel 9",[128,256]],["Google Pixel 9a",[128,256]],["Google Pixel 9 Pro Fold",[256,512]],
+["Google Pixel 8 Pro",[128,256,512,1024]],["Google Pixel 8",[128,256]],["Google Pixel 8a",[128,256]]]);
+["Negra","Gris","Blanca","Beige","Azul marino"].forEach(function(col){[["Essentials Hoodie"],["Essentials Crewneck"],["Essentials Zip"],["STWD Hoodie"],["STWD Crewneck"],["STWD Zip"]].forEach(function(m){PRODUCTOS.push({n:"Sudadera "+m[0]+" "+col,c:"Ropa"})})});
+// ========================
+var CAT={
+ "Apple":{a:"#e8e8ed",t:"imac",d:"iPhone, Mac, iPad"},
+ "Celulares":{a:"#34d399",t:"pixel",d:"Google Pixel"},
+ "Laptops":{a:"#4f9dff",t:"laptop",d:"Lenovo y HP"},
+ "Ropa":{a:"#ff3b4e",t:"hoodie",d:"Essentials y STWD"}
+}, CATS=["Todo","Apple","Celulares","Laptops","Ropa"], cat="Todo", sub="Todos", q="", cart=[];
+var GRID='<svg viewBox="0 0 200 200" fill="none" stroke="#c9a24a" stroke-width="5" stroke-linejoin="round"><rect x="35" y="35" width="55" height="55" rx="8"/><rect x="110" y="35" width="55" height="55" rx="8"/><rect x="35" y="110" width="55" height="55" rx="8"/><rect x="110" y="110" width="55" height="55" rx="8"/></svg>';
+function typeOf(n){return /iMac/.test(n)?"imac":/Mac mini/.test(n)?"mini":/MacBook/.test(n)?"laptop":/iPad/.test(n)?"ipad":/iPhone/.test(n)?"iphone":/Pixel/.test(n)?"pixel":/Lenovo|HP/.test(n)?"laptop":"hoodie"}
+// Ilustraciones en SVG (sustituye por fotos reales con img:"fotos/archivo.jpg")
+function art(t,a,n){
+ var S='<svg viewBox="0 0 200 200" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">',E='</svg>',B='stroke="#777" stroke-width="3"',F='fill="'+a+'" fill-opacity=".3"';
+ if(t==="imac")return S+'<rect x="30" y="36" width="140" height="92" rx="8" fill="#1b1b1b" '+B+'/><rect x="37" y="43" width="126" height="62" rx="3" '+F+'/><path d="M30 112h140" '+B+'/><path d="M88 128l-6 30M112 128l6 30M68 162h64" stroke="#777" stroke-width="5"/>'+E;
+ if(t==="ipad")return S+'<rect x="50" y="26" width="100" height="148" rx="12" fill="#1b1b1b" '+B+'/><rect x="58" y="36" width="84" height="128" rx="4" '+F+'/><circle cx="100" cy="31" r="1.8" fill="#777"/>'+E;
+ if(t==="iphone"||t==="pixel")return S+'<rect x="68" y="20" width="64" height="160" rx="15" fill="#1b1b1b" '+B+'/><rect x="74" y="28" width="52" height="144" rx="10" '+F+'/>'+(t==="iphone"?'<rect x="90" y="33" width="20" height="6" rx="3" fill="#000"/>':'<circle cx="100" cy="38" r="3" fill="#000"/>')+E;
+ if(t==="mini")return S+'<rect x="40" y="90" width="120" height="34" rx="12" fill="#1b1b1b" '+B+'/><rect x="52" y="103" width="96" height="4" rx="2" '+F+'/>'+E;
+ if(t==="laptop")return S+'<rect x="40" y="48" width="120" height="80" rx="6" fill="#1b1b1b" '+B+'/><rect x="47" y="55" width="106" height="66" rx="3" '+F+'/><path d="M20 134h160l-10 16H30z" fill="#2a2a2a" '+B+'/><path d="M88 142h24" stroke="#777" stroke-width="3"/>'+E;
+ var cm={Gris:"#8d8d92",Blanca:"#eeeeee",Beige:"#cdb89a",Azul:"#1f2f4f"},c="#222222",k;for(k in cm)if(n.indexOf(k)>-1)c=cm[k];
+ var tc=/Blanca|Beige/.test(n)?"#111":"#fff",ess=/Essentials/.test(n),zip=/Zip/.test(n),crew=/Crewneck/.test(n),st='stroke="#555" stroke-width="3"';
+ return S+'<path d="M72 52L48 62L24 128L46 136L64 100V168H136V100L154 136L176 128L152 62L128 52Z" fill="'+c+'" '+st+'/>'+
+  (crew?'<path d="M76 52Q100 84 124 52" fill="'+c+'" '+st+'/><path d="M82 54Q100 76 118 54" '+st+'/>':'<path d="M72 52Q100 90 128 52Q124 24 100 24Q76 24 72 52Z" fill="'+c+'" '+st+'/>'+(zip?'':'<path d="M92 74v22M108 74v22" '+st+'/>'))+
+  (zip?'<path d="M100 70V168" '+st+'/>':'<path d="M78 140h44l5 22H73z" stroke="#555" stroke-width="2.5"/>')+
+  '<text x="'+(zip?122:100)+'" y="'+(zip?100:124)+'" text-anchor="middle" font-family="Sora,sans-serif" font-weight="700" font-size="'+(zip?(ess?6:10):(ess?9:15))+'" fill="'+tc+'" stroke="none">'+(ess?"ESSENTIALS":"STWD")+'</text>'+E;
+}
+var $=function(i){return document.getElementById(i)};
+
+function renderFilters(){
+  $("filters").innerHTML=CATS.map(function(c){
+    var k=CAT[c],a=k?k.a:"#c9a24a",n=PRODUCTOS.filter(function(x){return c==="Todo"||x.c===c}).length;
+    return '<button class="tile'+(c===cat?' on':'')+'" style="--a:'+a+'" data-c="'+c+'">'+(k?art(k.t,a,c):GRID)+'<h3>'+c+'</h3><small>'+(k?k.d:"Catálogo completo")+' · '+n+'</small></button>';
+  }).join("");
+}
+function grp(x){var n=x.n,m=n.match(/iPhone (\d+)/);return m?"iPhone "+m[1]:/iPhone Air/.test(n)?"iPhone 17":/iMac/.test(n)?"iMac":/Mac mini/.test(n)?"Mac mini":/MacBook Neo/.test(n)?"MacBook Neo":/MacBook Air/.test(n)?"MacBook Air":/MacBook Pro/.test(n)?"MacBook Pro":/iPad mini/.test(n)?"iPad mini":/iPad Air/.test(n)?"iPad Air":/iPad Pro/.test(n)?"iPad Pro":/iPad/.test(n)?"iPad":(m=n.match(/Pixel (\d+)/))?"Pixel "+m[1]:/Lenovo/.test(n)?"Lenovo":/HP /.test(n)?"HP":/Essentials/.test(n)?"Essentials":"STWD"}
+function renderSubs(){
+  var gs=["Todos"];
+  if(cat!=="Todo")PRODUCTOS.forEach(function(x){var g=grp(x);if(x.c===cat&&gs.indexOf(g)<0)gs.push(g)});
+  $("subs").innerHTML=gs.length>2?gs.map(function(g){return '<button class="chip'+(g===sub?' on':'')+'" data-s="'+g+'">'+g+'</button>'}).join(""):"";
+}
+function card(x,i,k){
+  var a=CAT[x.c].a;
+  return '<article class="card" style="--a:'+a+';--k:'+k+'"><div class="img">'+(x.img?'<img src="'+x.img+'" alt="'+x.n+'">':art(typeOf(x.n),a,x.n))+'</div>'+
+    '<div class="info"><small class="catb">'+x.c+'</small><h3>'+x.n+'</h3><div class="price"><span class="ask">Precio por WhatsApp</span></div></div>'+
+    (x.c==="Ropa"?'<select class="sz" id="sz'+i+'" aria-label="Talla"><option>S</option><option selected>M</option><option>L</option><option>XL</option></select>':'')+'<button class="btn solid" data-askm="'+i+'">Preguntar por este modelo</button><button class="addlink" data-add="'+i+'">+ Agregar a cotización</button></article>';
+}
+function norm(t){return t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")}
+function esc(t){return t.replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function hit(x){
+  if(!q)return true;
+  var n=norm(x.n+" "+x.c),s=norm(q);
+  return s.split(/\s+/).every(function(w){return n.indexOf(w)>-1})||n.replace(/\s/g,"").indexOf(s.replace(/\s/g,""))>-1;
+}
+function clearQ(){q="";$("q").value="";$("qx").hidden=true}
+function wa(m){window.open("https://wa.me/"+WHATSAPP+"?text="+encodeURIComponent(m),"_blank")}
+function renderGrid(){
+  var k=0,h="",found=0,go=!!q;
+  CATS.slice(1).forEach(function(c){
+    if(!go&&cat!=="Todo"&&cat!==c)return;
+    var tot=0,shown=0,b="";
+    PRODUCTOS.forEach(function(x,i){
+      if(x.c!==c||!hit(x)||(!go&&sub!=="Todos"&&grp(x)!==sub))return;
+      tot++;
+      if(go||cat!=="Todo"||shown<8){shown++;b+=card(x,i,k++)}
+    });
+    if(!tot)return;
+    found+=tot;
+    h+='<div class="sec" style="--a:'+CAT[c].a+'"><h2>'+c+'</h2><i></i></div>'+b;
+    if(tot>shown)h+='<div class="more"><button class="btn ghost" data-c="'+c+'">Ver los '+tot+' productos de '+c+'</button></div>';
+  });
+  if(go&&found)h='<p class="res">'+found+' resultado'+(found===1?'':'s')+' para “'+esc(q)+'”</p>'+h;
+  if(!found)h='<div class="none"><p>No encontramos ese modelo en el catálogo.</p><button class="btn ghost" data-ask="1">Preguntar por WhatsApp</button></div>';
+  $("grid").innerHTML=h;
+}
+function renderCart(){
+  $("count").textContent=cart.length;
+  $("items").innerHTML=cart.length?cart.map(function(o,k){var x=PRODUCTOS[o.i];return '<div class="row"><span>'+x.n+(o.s?' · Talla '+o.s:'')+'</span><button data-rm="'+k+'">Quitar</button></div>'}).join(""):'<p class="empty">Aún no has agregado productos.</p>';
+}
+document.addEventListener("click",function(e){
+  var t=e.target.closest("[data-c],[data-go],[data-s],[data-add],[data-rm],[data-ask],[data-askm]")||e.target;
+  if(t.dataset.c){cat=t.dataset.c;sub="Todos";clearQ();renderFilters();renderSubs();renderGrid()}
+  if(t.dataset.s){clearQ();sub=t.dataset.s;renderSubs();renderGrid()}
+  if(t.dataset.go){cat=t.dataset.go;sub="Todos";clearQ();renderFilters();renderSubs();renderGrid()}
+  if(t.dataset.add!==undefined){var z=$("sz"+t.dataset.add);cart.push({i:+t.dataset.add,s:z?z.value:""});renderCart();openCart()}
+  if(t.dataset.askm!==undefined){var zz=$("sz"+t.dataset.askm),xx=PRODUCTOS[+t.dataset.askm];wa("Hola, quiero consultar el precio y la disponibilidad de: "+xx.n+(zz?" (Talla "+zz.value+")":""))}
+  if(t.dataset.ask!==undefined){wa(q?"Hola, estoy buscando: "+q+". ¿Me confirman precio y disponibilidad?":"Hola, quiero consultar precio y disponibilidad de un modelo de HoodTech.")}
+  if(t.dataset.rm!==undefined){cart.splice(+t.dataset.rm,1);renderCart()}
+});
+function openCart(){$("drawer").classList.add("open");$("ov").classList.add("on")}
+function closeCart(){$("drawer").classList.remove("open");$("ov").classList.remove("on")}
+$("open").onclick=openCart;$("ov").onclick=closeCart;
+$("close").onclick=closeCart;
+$("send").onclick=function(){
+  if(!cart.length){alert("Agrega al menos un producto para continuar.");return}
+  var l=cart.map(function(o){var x=PRODUCTOS[o.i];return "• "+x.n+(o.s?" (Talla "+o.s+")":"")}).join("\n");
+  wa("Hola, me gustaría cotizar los siguientes productos de HoodTech:\n"+l+"\n\nQuedo en espera de precios y disponibilidad.");
+};
+$("q").oninput=function(){q=this.value.trim();$("qx").hidden=!q;renderGrid()};
+$("qx").onclick=function(){clearQ();renderGrid();$("q").focus()};
+$("cot").onclick=function(e){e.preventDefault();window.open("https://wa.me/"+WHATSAPP+"?text="+encodeURIComponent("Hola, quiero información sobre los productos de HoodTech."),"_blank")};
+renderFilters();renderSubs();renderGrid();renderCart();
+</script>
+</body>
+</html>
