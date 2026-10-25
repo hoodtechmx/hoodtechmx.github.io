@@ -108,6 +108,7 @@ html{scroll-behavior:smooth}
 .card .btn.solid:hover{background:var(--a);filter:brightness(1.12);box-shadow:0 10px 22px -10px var(--a)}
 .addlink{background:none;border:0;color:var(--mut);font:500 13px Inter,sans-serif;padding:2px 16px 16px;cursor:pointer;text-align:center;transition:color .2s ease}
 .addlink:hover{color:var(--txt)}
+.img{overflow:hidden}.img.has svg{display:none}.img img{transition:transform .5s ease}.card:hover .img img{transform:scale(1.05)}
 </style>
 </head>
 <body>
@@ -216,11 +217,13 @@ function renderSubs(){
 }
 function card(x,i,k){
   var a=CAT[x.c].a;
-  return '<article class="card" style="--a:'+a+';--k:'+k+'"><div class="img">'+art(typeOf(x.n),a,x.n)+'<img src="'+(x.img||'fotos/'+slug(x.n)+'.jpg')+'" alt="'+x.n+'" loading="lazy" onerror="this.remove()">'+'</div>'+
+  return '<article class="card" style="--a:'+a+';--k:'+k+'"><div class="img">'+art(typeOf(x.n),a,x.n)+'<img src="'+(x.img||'fotos/'+slug(x.n)+'.jpg')+'" alt="'+x.n+'" loading="lazy" onload="imgOk(this)" onerror="imgErr(this)">'+'</div>'+
     '<div class="info"><small class="catb">'+x.c+'</small><h3>'+x.n+'</h3><div class="price"><span class="ask">Precio por WhatsApp</span></div></div>'+
     (x.c==="Ropa"?'<select class="sz" id="sz'+i+'" aria-label="Talla"><option>S</option><option selected>M</option><option>L</option><option>XL</option></select>':'')+'<button class="btn solid" data-askm="'+i+'">Preguntar por este modelo</button><button class="addlink" data-add="'+i+'">+ Agregar a cotización</button></article>';
 }
 function norm(t){return t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")}
+function imgOk(i){i.parentNode.classList.add("has")}
+function imgErr(i){var e=+(i.dataset.e||0),x=["png","webp"];if(e<2){i.dataset.e=e+1;i.src=i.src.replace(/\.[a-z]+$/,"."+x[e])}else i.remove()}
 function slug(n){return norm(n).replace(/\s*\d+\s?(gb|tb)$/,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")}
 function esc(t){return t.replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 function hit(x){
