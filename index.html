@@ -223,7 +223,7 @@ function card(x,i,k){
 }
 function norm(t){return t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")}
 function imgOk(i){i.parentNode.classList.add("has")}
-function imgErr(i){var e=+(i.dataset.e||0),x=["png","webp"];if(e<2){i.dataset.e=e+1;i.src=i.src.replace(/\.[a-z]+$/,"."+x[e])}else i.remove()}
+function imgErr(i){var e=+(i.dataset.e||0),b=i.dataset.b||(i.dataset.b=i.src.replace(/\.[a-z]+$/,"")),x=[b+".png",b+".webp",b+".jpg.png"];if(e<3){i.dataset.e=e+1;i.src=x[e]}else i.remove()}
 function slug(n){return norm(n).replace(/\s*\d+\s?(gb|tb)$/,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")}
 function esc(t){return t.replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 function hit(x){
