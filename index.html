@@ -386,11 +386,6 @@ function onScroll(){var y=window.scrollY,mx=H.scrollHeight-innerHeight;prog.styl
   if(y>160&&y>ly+4)hd.classList.add("hdr-hide");else if(y<ly-4||y<160)hd.classList.remove("hdr-hide")}
  ly=y;tk=false}
 addEventListener("scroll",function(){if(!tk){tk=true;requestAnimationFrame(onScroll)}},{passive:true});onScroll();
-/* Scramble en logo, menú y botones del hero */
-if(!RM){var CH="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&";
- function scr(el){if(el._s)return;var o=el.dataset.o||(el.dataset.o=el.textContent),n=o.length,f=0;el._s=1;
-  (function step(){var out="";for(var i=0;i<n;i++)out+=(o[i]===" "||i<f/2.2)?o[i]:CH[Math.random()*CH.length|0];el.textContent=out;f++;if(f/2.2<n+1)setTimeout(step,32);else{el.textContent=o;el._s=0}})()}
- D.addEventListener("mouseover",function(e){var t=e.target.closest&&e.target.closest(".logo,nav a,.hero .btn");if(t)scr(t)})}
 /* Hover: la foto del producto se inclina con el mouse */
 var g=D.getElementById("grid");
 if(FINE&&!RM&&g){var cur=null;function rst(){if(cur){cur.style.transform="";cur=null}}
