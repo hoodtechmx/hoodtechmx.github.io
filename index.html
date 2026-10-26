@@ -185,10 +185,10 @@ addP("Apple",[['MacBook Neo 13" A18 Pro',[256,512]],['MacBook Air 13" M5',[512,1
 addP("Apple",[['iPad 11" A16',[128,256,512]],['iPad mini A17 Pro',[128,256,512]],['iPad Air 11" M4',[128,256,512,1024]],['iPad Air 13" M4',[128,256,512,1024]],
 ['iPad Pro 11" M5',[256,512,1024,2048]],['iPad Pro 13" M5',[256,512,1024,2048]]]);
 // [nombre, foto compartida]: los que se ven iguales usan la misma imagen
-[["AirPods Pro 3"],["AirPods Pro 2 USB-C","airpods-pro-2"],["AirPods Pro 2 Lightning","airpods-pro-2"],["AirPods 4","airpods-4"],["AirPods 4 con cancelación activa","airpods-4"],["AirPods 3"],["AirPods 2"]].forEach(function(m){PRODUCTOS.push({n:m[0],c:"AirPods",img:"fotos/"+(m[1]||slug(m[0]))+".jpg"})});
+[["AirPods Pro 3"],["AirPods Pro 2 USB-C","airpods-pro-2"],["AirPods Pro 2 Lightning","airpods-pro-2"],["AirPods 4","airpods-4"],["AirPods 4 con cancelación activa","airpods-4"],["AirPods 3"],["AirPods 2"]].forEach(function(m){PRODUCTOS.push({n:m[0],c:"AirPods",f:m[1]||slug(m[0])})});
 [["USB-C",["Medianoche","Blanco estelar","Azul","Morado","Naranja"]],["Lightning",["Gris espacial","Plata","Azul cielo","Verde","Rosa"]]].forEach(function(m){m[1].forEach(function(c){PRODUCTOS.push({n:"AirPods Max "+m[0]+" "+c,c:"AirPods"})})});
 // Apple Watch: la foto es una por modelo+color (se comparte entre tallas y GPS/Celular)
-function wpush(mod,z,col,k){var b="Apple Watch "+mod+" "+col;PRODUCTOS.push({n:b+" "+z+" "+k,c:"Apple Watch",img:"fotos/"+slug(b)+".jpg"})}
+function wpush(mod,z,col,k){var b="Apple Watch "+mod+" "+col;PRODUCTOS.push({n:b+" "+z+" "+k,c:"Apple Watch",f:slug(b)})}
 ["40 mm","44 mm"].forEach(function(z){["Medianoche","Blanco estelar"].forEach(function(c){["GPS","GPS + Celular"].forEach(function(k){wpush("SE 3",z,"Aluminio "+c,k)})})});
 addP("Celulares",[["Google Pixel 10 Pro XL",[256,512,1024]],["Google Pixel 10 Pro",[128,256,512,1024]],["Google Pixel 10",[128,256]],["Google Pixel 10 Pro Fold",[256,512,1024]],
 ["Google Pixel 9 Pro XL",[128,256,512,1024]],["Google Pixel 9 Pro",[128,256,512,1024]],["Google Pixel 9",[128,256]],["Google Pixel 9a",[128,256]],["Google Pixel 9 Pro Fold",[256,512]],
@@ -224,12 +224,14 @@ function art(t,a,n){
   (zip?'<path d="M100 70V168" '+st+'/>':'<path d="M78 140h44l5 22H73z" stroke="#555" stroke-width="2.5"/>')+
   '<text x="'+(zip?122:100)+'" y="'+(zip?100:124)+'" text-anchor="middle" font-family="Sora,sans-serif" font-weight="700" font-size="'+(zip?(ess?6:bape?8:10):(ess?9:bape?12:15))+'" fill="'+tc+'" stroke="none">'+(ess?"ESSENTIALS":bape?"BAPE":"STWD")+'</text>'+(bape?'<path d="M82 46l4 9 4-9 4 9 4-9 4 9 4-9 4 9 4-9 4 9 4-9" fill="#fff" stroke="#555" stroke-width="1.5"/><circle cx="88" cy="36" r="2.5" fill="#fff" stroke="none"/><circle cx="112" cy="36" r="2.5" fill="#fff" stroke="none"/>':'')+E;
 }
+var DIRS=["fotos1","fotos2"]; // carpetas donde busca las fotos, en este orden
+function cands(n,ex){var o=[];DIRS.forEach(function(d){ex.forEach(function(e){o.push(d+"/"+n+"."+e)})});return o}
 var $=function(i){return document.getElementById(i)};
 
 function renderFilters(){
   $("filters").innerHTML=CATS.map(function(c){
     var k=CAT[c],a=k?k.a:"#c9a24a",n=PRODUCTOS.filter(function(x){return c==="Todo"||x.c===c}).length;
-    return '<button class="tile'+(c===cat?' on':'')+'" style="--a:'+a+'" data-c="'+c+'">'+(k?art(k.t,a,c)+'<img class="lg" src="fotos/logo-'+LOGO[c]+'.png" alt="" onload="this.parentNode.classList.add(\'lh\')" onerror="lgErr(this)">':GRID)+'<h3>'+c+'</h3><small>'+(k?k.d:"Catálogo completo")+' · '+n+'</small></button>';
+    return '<button class="tile'+(c===cat?' on':'')+'" style="--a:'+a+'" data-c="'+c+'">'+(k?art(k.t,a,c)+'<img class="lg" src="fotos1/logo-'+LOGO[c]+'.png" data-n="logo-'+LOGO[c]+'" alt="" onload="this.parentNode.classList.add(\'lh\')" onerror="lgErr(this)">':GRID)+'<h3>'+c+'</h3><small>'+(k?k.d:"Catálogo completo")+' · '+n+'</small></button>';
   }).join("");
 }
 function grp(x){var n=x.n,m=n.match(/iPhone (\d+)/);return /AirPods/.test(n)?(/Max/.test(n)?"AirPods Max":/Pro/.test(n)?"AirPods Pro":/AirPods 4/.test(n)?"AirPods 4":"AirPods 3 y 2"):/Apple Watch/.test(n)?n.match(/Series \d+|Ultra \d+|SE \d+/)[0]:m?"iPhone "+m[1]:/iPhone Air/.test(n)?"iPhone 17":/iMac/.test(n)?"iMac":/Mac mini/.test(n)?"Mac mini":/MacBook Neo/.test(n)?"MacBook Neo":/MacBook Air/.test(n)?"MacBook Air":/MacBook Pro/.test(n)?"MacBook Pro":/iPad mini/.test(n)?"iPad mini":/iPad Air/.test(n)?"iPad Air":/iPad Pro/.test(n)?"iPad Pro":/iPad/.test(n)?"iPad":(m=n.match(/Pixel (\d+)/))?"Pixel "+m[1]:/Lenovo/.test(n)?"Lenovo":/HP /.test(n)?"HP":/BAPE/.test(n)?"BAPE Shark":/Essentials/.test(n)?"Essentials":"STWD"}
@@ -240,14 +242,14 @@ function renderSubs(){
 }
 function card(x,i,k){
   var a=CAT[x.c].a;
-  return '<article class="card" style="--a:'+a+';--k:'+k+'"><div class="img">'+art(typeOf(x.n),a,x.n)+'<img src="'+(x.img||'fotos/'+slug(x.n)+'.jpg')+'" alt="'+x.n+'" loading="lazy" onload="imgOk(this)" onerror="imgErr(this)">'+'</div>'+
+  return '<article class="card" style="--a:'+a+';--k:'+k+'"><div class="img">'+art(typeOf(x.n),a,x.n)+'<img src="'+(x.img||'fotos1/'+(x.f||slug(x.n))+'.jpg')+'"'+(x.img?'':' data-n="'+(x.f||slug(x.n))+'"')+' alt="'+x.n+'" loading="lazy" onload="imgOk(this)" onerror="imgErr(this)">'+'</div>'+
     '<div class="info"><small class="catb">'+x.c+'</small><h3>'+x.n+'</h3><div class="price"><span class="ask">Precio por WhatsApp</span></div></div>'+
     (x.c==="Ropa"?'<select class="sz" id="sz'+i+'" aria-label="Talla"><option>S</option><option selected>M</option><option>L</option><option>XL</option></select>':'')+'<button class="btn solid" data-askm="'+i+'">Preguntar por este modelo</button><button class="addlink" data-add="'+i+'">+ Agregar a cotización</button></article>';
 }
 function norm(t){return t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")}
-function lgErr(i){var e=+(i.dataset.e||0),x=["svg","webp","jpg"];if(e<3){i.dataset.e=e+1;i.src=i.src.replace(/\.[a-z]+$/,"."+x[e])}else i.remove()}
+function lgErr(i){var L=cands(i.dataset.n,["png","svg","webp","jpg"]),k=+(i.dataset.k||0)+1;if(k<L.length){i.dataset.k=k;i.src=L[k]}else i.remove()}
 function imgOk(i){i.parentNode.classList.add("has")}
-function imgErr(i){var e=+(i.dataset.e||0),b=i.dataset.b||(i.dataset.b=i.src.replace(/\.[a-z]+$/,"")),x=[b+".png",b+".webp",b+".jpg.png"];if(e<3){i.dataset.e=e+1;i.src=x[e]}else i.remove()}
+function imgErr(i){if(!i.dataset.n){i.remove();return}var L=cands(i.dataset.n,["jpg","png","webp"]),k=+(i.dataset.k||0)+1;if(k<L.length){i.dataset.k=k;i.src=L[k]}else i.remove()}
 function slug(n){return norm(n).replace(/\s*\d+\s?(gb|tb)$/,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")}
 function esc(t){return t.replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 function hit(x){
