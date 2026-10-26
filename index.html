@@ -57,6 +57,7 @@ html{scroll-behavior:smooth}
 .tile:hover{transform:translateY(-4px);background:#1a1a1a}
 .tile.on{background:var(--a);color:#000;box-shadow:0 12px 30px -12px var(--a)}
 .tile svg{width:54px;height:54px;display:block;margin-bottom:12px;pointer-events:none}
+.tile .lg{display:none;width:54px;height:54px;object-fit:contain;margin-bottom:12px;pointer-events:none}.tile.lh svg{display:none}.tile.lh .lg{display:block}
 .tile h3{font-size:18px;pointer-events:none}.tile small{opacity:.7;pointer-events:none}
 .card{--a:#fff;border-top:3px solid var(--a);animation:in .5s ease both;animation-delay:calc(var(--k,0)*45ms);transition:transform .35s ease,box-shadow .35s ease}
 .card:hover{transform:translateY(-6px);box-shadow:0 16px 32px -16px var(--a)}
@@ -183,7 +184,7 @@ var CAT={
  "Celulares":{a:"#34d399",t:"pixel",d:"Google Pixel"},
  "Laptops":{a:"#4f9dff",t:"laptop",d:"Lenovo y HP"},
  "Ropa":{a:"#ff3b4e",t:"hoodie",d:"Essentials y STWD"}
-}, CATS=["Todo","Apple","Celulares","Laptops","Ropa"], cat="Todo", sub="Todos", q="", cart=[];
+}, LOGO={"Apple":"apple","Celulares":"google","Laptops":"hp","Ropa":"stwd"}, CATS=["Todo","Apple","Celulares","Laptops","Ropa"], cat="Todo", sub="Todos", q="", cart=[];
 var GRID='<svg viewBox="0 0 200 200" fill="none" stroke="#c9a24a" stroke-width="5" stroke-linejoin="round"><rect x="35" y="35" width="55" height="55" rx="8"/><rect x="110" y="35" width="55" height="55" rx="8"/><rect x="35" y="110" width="55" height="55" rx="8"/><rect x="110" y="110" width="55" height="55" rx="8"/></svg>';
 function typeOf(n){return /iMac/.test(n)?"imac":/Mac mini/.test(n)?"mini":/MacBook/.test(n)?"laptop":/iPad/.test(n)?"ipad":/iPhone/.test(n)?"iphone":/Pixel/.test(n)?"pixel":/Lenovo|HP/.test(n)?"laptop":"hoodie"}
 // Ilustraciones en SVG (sustituye por fotos reales con img:"fotos/archivo.jpg")
@@ -206,7 +207,7 @@ var $=function(i){return document.getElementById(i)};
 function renderFilters(){
   $("filters").innerHTML=CATS.map(function(c){
     var k=CAT[c],a=k?k.a:"#c9a24a",n=PRODUCTOS.filter(function(x){return c==="Todo"||x.c===c}).length;
-    return '<button class="tile'+(c===cat?' on':'')+'" style="--a:'+a+'" data-c="'+c+'">'+(k?art(k.t,a,c):GRID)+'<h3>'+c+'</h3><small>'+(k?k.d:"Catálogo completo")+' · '+n+'</small></button>';
+    return '<button class="tile'+(c===cat?' on':'')+'" style="--a:'+a+'" data-c="'+c+'">'+(k?art(k.t,a,c)+'<img class="lg" src="fotos/logo-'+LOGO[c]+'.png" alt="" onload="this.parentNode.classList.add(\'lh\')" onerror="lgErr(this)">':GRID)+'<h3>'+c+'</h3><small>'+(k?k.d:"Catálogo completo")+' · '+n+'</small></button>';
   }).join("");
 }
 function grp(x){var n=x.n,m=n.match(/iPhone (\d+)/);return m?"iPhone "+m[1]:/iPhone Air/.test(n)?"iPhone 17":/iMac/.test(n)?"iMac":/Mac mini/.test(n)?"Mac mini":/MacBook Neo/.test(n)?"MacBook Neo":/MacBook Air/.test(n)?"MacBook Air":/MacBook Pro/.test(n)?"MacBook Pro":/iPad mini/.test(n)?"iPad mini":/iPad Air/.test(n)?"iPad Air":/iPad Pro/.test(n)?"iPad Pro":/iPad/.test(n)?"iPad":(m=n.match(/Pixel (\d+)/))?"Pixel "+m[1]:/Lenovo/.test(n)?"Lenovo":/HP /.test(n)?"HP":/Essentials/.test(n)?"Essentials":"STWD"}
@@ -222,6 +223,7 @@ function card(x,i,k){
     (x.c==="Ropa"?'<select class="sz" id="sz'+i+'" aria-label="Talla"><option>S</option><option selected>M</option><option>L</option><option>XL</option></select>':'')+'<button class="btn solid" data-askm="'+i+'">Preguntar por este modelo</button><button class="addlink" data-add="'+i+'">+ Agregar a cotización</button></article>';
 }
 function norm(t){return t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")}
+function lgErr(i){var e=+(i.dataset.e||0),x=["svg","webp","jpg"];if(e<3){i.dataset.e=e+1;i.src=i.src.replace(/\.[a-z]+$/,"."+x[e])}else i.remove()}
 function imgOk(i){i.parentNode.classList.add("has")}
 function imgErr(i){var e=+(i.dataset.e||0),b=i.dataset.b||(i.dataset.b=i.src.replace(/\.[a-z]+$/,"")),x=[b+".png",b+".webp",b+".jpg.png"];if(e<3){i.dataset.e=e+1;i.src=x[e]}else i.remove()}
 function slug(n){return norm(n).replace(/\s*\d+\s?(gb|tb)$/,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")}
