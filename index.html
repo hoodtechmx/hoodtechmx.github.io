@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>HoodTech – Tecnología y moda urbana</title>
+<script>document.documentElement.classList.add("js");try{if(sessionStorage.getItem("ht"))document.documentElement.classList.add("skip");else sessionStorage.setItem("ht","1")}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -114,9 +115,47 @@ html{scroll-behavior:smooth}
 .anyx h2{font-size:clamp(24px,4vw,36px);margin-bottom:10px}
 .anyx p{color:var(--mut);max-width:520px;margin:0 auto 26px}
 .anyx .btn.wa{width:auto;padding:18px 36px;font-size:17px}
+
+/* ===== Animaciones estilo Museum of Motion (se suman a las anteriores) ===== */
+.curtain{position:fixed;inset:0;z-index:100;background:#000;display:grid;place-items:center;pointer-events:none;animation:curtain .95s cubic-bezier(.77,0,.18,1) .9s forwards}
+.curtain b{font:700 clamp(26px,6vw,64px) Sora,"Segoe UI",sans-serif;letter-spacing:.2em;animation:cin .8s ease both}
+.skip .curtain{display:none}
+@keyframes curtain{to{transform:translateY(-100%);visibility:hidden}}
+@keyframes cin{from{opacity:0;letter-spacing:.55em}to{opacity:1;letter-spacing:.2em}}
+#prog{position:fixed;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--red),var(--gold));transform-origin:0 50%;transform:scaleX(0);z-index:30;pointer-events:none}
+header{transition:transform .45s cubic-bezier(.22,.8,.25,1)}header.hdr-hide{transform:translateY(-100%)}
+.w{display:inline-block;overflow:hidden;vertical-align:top;padding:0 .06em .16em;margin:0 -.06em -.16em}
+.wi{display:inline-block;transform:translateY(115%);animation:wup 1s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--base,1000ms) + var(--i)*85ms)}
+@keyframes wup{to{transform:none}}
+.hero h1{transform:translate3d(0,calc(var(--py,0)*1px),0)}
+.js .rv{opacity:0;transform:translateY(36px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1)}
+.js .rv.in{opacity:1;transform:none}
+.stats{display:flex;flex-wrap:wrap;gap:30px 56px;margin-top:56px;padding-top:28px;border-top:1px solid var(--line)}
+.stats b{display:block;font:700 clamp(30px,4.4vw,52px)/1 Sora,"Segoe UI",sans-serif;color:var(--gold);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.stats span{color:var(--mut);font-size:14px}
+.marq{overflow:hidden;border-block:1px solid var(--line);margin:0 0 56px;padding:18px 0;white-space:nowrap}
+.track{display:inline-flex;animation:mq 40s linear infinite;will-change:transform}
+.marq:hover .track{animation-play-state:paused}
+.track span{font:700 clamp(26px,4.6vw,54px)/1 Sora,"Segoe UI",sans-serif;padding:0 .45em;letter-spacing:-.02em;text-transform:uppercase}
+.track span.o{-webkit-text-stroke:1.2px var(--txt);color:transparent}
+.track span.d{color:var(--gold);font-size:.6em;padding:0 .1em;align-self:center}
+@keyframes mq{to{transform:translateX(-50%)}}
+.sec h2{animation:in .7s ease both}
+.sec i{transform-origin:left;animation:line 1.1s cubic-bezier(.2,.8,.2,1) both}
+@keyframes line{from{transform:scaleX(0)}}
+.card .img{transition:transform .25s ease-out;will-change:transform}
+.mag{transition:transform .25s ease,box-shadow .25s ease,background .25s ease,color .25s ease,translate .4s cubic-bezier(.2,.8,.2,1)}
+.rip{position:relative;overflow:hidden}
+.ripple{position:absolute;border-radius:50%;background:currentColor;opacity:.28;transform:scale(0);animation:rp .65s ease-out forwards;pointer-events:none}
+@keyframes rp{to{transform:scale(1);opacity:0}}
+#count.bump{animation:bump .5s cubic-bezier(.3,1.6,.5,1)}
+@keyframes bump{40%{transform:scale(1.55)}}
+@media(prefers-reduced-motion:reduce){.js .rv{opacity:1!important;transform:none!important}.wi{transform:none!important}.curtain{display:none!important}.hero h1{transform:none}}
 </style>
 </head>
 <body>
+<div class="curtain" aria-hidden="true"><b>HOODTECH</b></div>
+<div id="prog"></div>
 <div class="promo">Precios y disponibilidad por WhatsApp · Envíos a todo México</div>
 <header>
   <a class="logo" href="#">HOODTECH</a>
@@ -128,7 +167,15 @@ html{scroll-behavior:smooth}
   <h1>Tecnología y moda urbana, con garantía</h1>
   <p>Equipos Apple, AirPods, Apple Watch, Google Pixel, Lenovo y HP, además de sudaderas Essentials, STWD y BAPE Shark. Productos originales, atención directa y envíos a todo el país.</p>
   <div class="btns"><a class="btn" href="#tienda">Ver catálogo</a><a class="btn ghost" href="#" id="cot">Cotizar por WhatsApp</a></div>
+  <div class="stats" id="stats">
+    <div><b id="st-models" data-count="200">200</b><span>modelos en catálogo</span></div>
+    <div><b id="st-cats" data-count="6">6</b><span>categorías</span></div>
+    <div><b data-count="100" data-suf="%">100%</b><span>productos originales</span></div>
+    <div><b data-count="32">32</b><span>estados con envío</span></div>
+  </div>
 </div>
+
+<div class="marq" aria-hidden="true"><div class="track" id="trk"></div></div>
 
 <section id="tienda">
   <div class="search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="q" type="search" placeholder="Buscar modelo, por ejemplo: iPhone 15 Pro 256" aria-label="Buscar productos" autocomplete="off"><button id="qx" aria-label="Borrar búsqueda" hidden>×</button></div>
@@ -306,6 +353,59 @@ $("q").oninput=function(){q=this.value.trim();$("qx").hidden=!q;renderGrid()};
 $("qx").onclick=function(){clearQ();renderGrid();$("q").focus()};
 $("cot").onclick=function(e){e.preventDefault();window.open("https://wa.me/"+WHATSAPP+"?text="+encodeURIComponent("Hola, quiero información sobre los productos de HoodTech."),"_blank")};
 renderFilters();renderSubs();renderGrid();renderCart();
+</script>
+
+<script>
+(function(){
+var D=document,H=D.documentElement,RM=matchMedia("(prefers-reduced-motion: reduce)").matches,FINE=matchMedia("(hover:hover) and (pointer:fine)").matches;
+var base=H.classList.contains("skip")?100:1000;H.style.setProperty("--base",base+"ms");
+function qa(s){return Array.prototype.slice.call(D.querySelectorAll(s))}
+/* Mask + Stagger: título del hero, palabra por palabra */
+var h1=D.querySelector(".hero h1");
+if(h1){var tt=h1.textContent.trim();h1.setAttribute("aria-label",tt);h1.innerHTML=tt.split(/\s+/).map(function(w,i){return '<span class="w" aria-hidden="true"><span class="wi" style="--i:'+i+'">'+w+'</span></span>'}).join(" ")}
+/* Reveal al hacer scroll */
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}})},{threshold:.15,rootMargin:"0px 0px -6% 0px"}),hi=0;
+[".hero p",".hero .btns",".stats",".search",".why > div",".note",".anyx"].forEach(function(sel){qa(sel).forEach(function(el,i){var hero=sel.indexOf(".hero")===0||sel===".stats";el.classList.add("rv");el.style.transitionDelay=(hero?base+200+(hi++)*140:i*110)+"ms";io.observe(el)})});
+/* Count: números del hero */
+var nm=D.getElementById("st-models"),nc=D.getElementById("st-cats");
+if(nm&&window.PRODUCTOS)nm.dataset.count=PRODUCTOS.length;
+if(nc&&window.CATS)nc.dataset.count=CATS.length-1;
+function count(el){var to=+el.dataset.count,suf=el.dataset.suf||"",t0=0;if(RM){el.textContent=to+suf;return}
+ function f(t){if(!t0)t0=t;var p=Math.min((t-t0)/1600,1),e=p===1?1:1-Math.pow(2,-10*p);el.textContent=Math.round(to*e)+suf;if(p<1)requestAnimationFrame(f)}
+ requestAnimationFrame(f)}
+var st=D.getElementById("stats");
+if(st){if(RM)qa("[data-count]").forEach(count);else{qa("[data-count]").forEach(function(el){el.textContent="0"+(el.dataset.suf||"")});
+ var so=new IntersectionObserver(function(es){if(es[0].isIntersecting){so.disconnect();setTimeout(function(){qa("[data-count]").forEach(count)},Math.max(0,base+450-performance.now()))}},{threshold:.4});so.observe(st)}}
+/* Marquee */
+var trk=D.getElementById("trk");
+if(trk){var it=["Apple","AirPods","Apple Watch","Google Pixel","Lenovo","HP","Essentials","STWD","BAPE Shark"],mh="";for(var k=0;k<2;k++)it.forEach(function(n,i){mh+='<span class="'+(i%2?"o":"")+'">'+n+'</span><span class="d">✦</span>'});trk.innerHTML=mh}
+/* Scroll: progreso, parallax y header que se esconde */
+var prog=D.getElementById("prog"),hd=D.querySelector("header"),hero=D.querySelector(".hero"),ly=0,tk=false;
+function onScroll(){var y=window.scrollY,mx=H.scrollHeight-innerHeight;prog.style.transform="scaleX("+(mx>0?y/mx:0)+")";
+ if(!RM){if(hero)hero.style.setProperty("--py",Math.min(y,800)*.18);
+  if(y>160&&y>ly+4)hd.classList.add("hdr-hide");else if(y<ly-4||y<160)hd.classList.remove("hdr-hide")}
+ ly=y;tk=false}
+addEventListener("scroll",function(){if(!tk){tk=true;requestAnimationFrame(onScroll)}},{passive:true});onScroll();
+/* Scramble en logo, menú y botones del hero */
+if(!RM){var CH="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&";
+ function scr(el){if(el._s)return;var o=el.dataset.o||(el.dataset.o=el.textContent),n=o.length,f=0;el._s=1;
+  (function step(){var out="";for(var i=0;i<n;i++)out+=(o[i]===" "||i<f/2.2)?o[i]:CH[Math.random()*CH.length|0];el.textContent=out;f++;if(f/2.2<n+1)setTimeout(step,32);else{el.textContent=o;el._s=0}})()}
+ D.addEventListener("mouseover",function(e){var t=e.target.closest&&e.target.closest(".logo,nav a,.hero .btn");if(t)scr(t)})}
+/* Hover: la foto del producto se inclina con el mouse */
+var g=D.getElementById("grid");
+if(FINE&&!RM&&g){var cur=null;function rst(){if(cur){cur.style.transform="";cur=null}}
+ g.addEventListener("pointermove",function(e){var im=e.target.closest&&e.target.closest(".img");if(!im){rst();return}if(cur&&cur!==im)rst();cur=im;var r=im.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;im.style.transform="perspective(800px) rotateY("+(x*14)+"deg) rotateX("+(-y*14)+"deg) scale(1.03)"});
+ g.addEventListener("pointerleave",rst)}
+/* Attract: botones principales siguen al mouse */
+if(FINE&&!RM){var MG=".hero .btn,header .cartbtn,.note .btn,.anyx .btn,.more .btn",mg=null;
+ function mrst(){if(mg){mg.style.translate="";mg=null}}
+ D.addEventListener("pointermove",function(e){var t=e.target.closest&&e.target.closest(MG);if(mg&&mg!==t)mrst();if(!t)return;mg=t;t.classList.add("mag");var r=t.getBoundingClientRect();t.style.translate=((e.clientX-r.left-r.width/2)*.28)+"px "+((e.clientY-r.top-r.height/2)*.4)+"px"});
+ H.addEventListener("mouseleave",mrst)}
+/* Feedback: onda al hacer clic y rebote del contador de cotización */
+D.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".btn,.chip,.cartbtn");if(!b||RM)return;b.classList.add("rip");var r=b.getBoundingClientRect(),d=Math.max(r.width,r.height)*2,s=D.createElement("span");s.className="ripple";s.style.cssText="width:"+d+"px;height:"+d+"px;left:"+(e.clientX-r.left-d/2)+"px;top:"+(e.clientY-r.top-d/2)+"px";b.appendChild(s);setTimeout(function(){s.remove()},700)});
+var cn=D.getElementById("count"),lc=cn.textContent;
+new MutationObserver(function(){if(cn.textContent!==lc){lc=cn.textContent;cn.classList.remove("bump");void cn.offsetWidth;cn.classList.add("bump")}}).observe(cn,{childList:true,characterData:true,subtree:true});
+})();
 </script>
 </body>
 </html>
