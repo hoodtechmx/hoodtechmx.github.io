@@ -249,7 +249,7 @@ function card(x,i,k){
 function norm(t){return t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")}
 function lgErr(i){var L=cands(i.dataset.n,["png","svg","webp","jpg"]),k=+(i.dataset.k||0)+1;if(k<L.length){i.dataset.k=k;i.src=L[k]}else i.remove()}
 function imgOk(i){i.parentNode.classList.add("has")}
-function imgErr(i){if(!i.dataset.n){i.remove();return}var L=cands(i.dataset.n,["jpg","png","webp"]),k=+(i.dataset.k||0)+1;if(k<L.length){i.dataset.k=k;i.src=L[k]}else i.remove()}
+function imgErr(i){if(!i.dataset.n){i.remove();return}var L=cands(i.dataset.n,["jpg","png","webp","jpeg","jpg.png"]),k=+(i.dataset.k||0)+1;if(k<L.length){i.dataset.k=k;i.src=L[k]}else i.remove()}
 function slug(n){return norm(n).replace(/\s*\d+\s?(gb|tb)$/,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")}
 function esc(t){return t.replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 function hit(x){
