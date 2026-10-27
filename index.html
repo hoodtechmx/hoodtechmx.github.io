@@ -150,6 +150,11 @@ header{transition:transform .45s cubic-bezier(.22,.8,.25,1)}header.hdr-hide{tran
 @keyframes rp{to{transform:scale(1);opacity:0}}
 #count.bump{animation:bump .5s cubic-bezier(.3,1.6,.5,1)}
 @keyframes bump{40%{transform:scale(1.55)}}
+.img img{opacity:0;font-size:0;color:transparent;transition:opacity .45s ease,transform .5s ease}
+.img.has img{opacity:1}
+.img svg{opacity:0;transition:opacity .3s ease}.img.nof svg{opacity:1}
+.img:not(.has):not(.nof)::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,#ffffff0f 50%,transparent 70%);background-size:220% 100%;animation:sh 1.4s linear infinite;pointer-events:none}
+@keyframes sh{from{background-position:220% 0}to{background-position:-220% 0}}
 @media(prefers-reduced-motion:reduce){.js .rv{opacity:1!important;transform:none!important}.wi{transform:none!important}.curtain{display:none!important}.hero h1{transform:none}}
 </style>
 </head>
@@ -289,14 +294,25 @@ function renderSubs(){
 }
 function card(x,i,k){
   var a=CAT[x.c].a;
-  return '<article class="card" style="--a:'+a+';--k:'+k+'"><div class="img">'+art(typeOf(x.n),a,x.n)+'<img src="'+(x.img||'fotos1/'+(x.f||slug(x.n))+'.jpg')+'"'+(x.img?'':' data-n="'+(x.f||slug(x.n))+'"')+' alt="'+x.n+'" loading="lazy" onload="imgOk(this)" onerror="imgErr(this)">'+'</div>'+
+  return '<article class="card" style="--a:'+a+';--k:'+k+'"><div class="img">'+art(typeOf(x.n),a,x.n)+'<img '+(x.img?'src="'+esc(x.img)+'"':'data-n="'+(x.f||slug(x.n))+'"')+' alt="'+esc(x.n)+'" onload="imgOk(this)" onerror="imgErr(this)">'+'</div>'+
     '<div class="info"><small class="catb">'+x.c+'</small><h3>'+x.n+'</h3><div class="price"><span class="ask">Precio por WhatsApp</span></div></div>'+
     (x.c==="Ropa"?'<select class="sz" id="sz'+i+'" aria-label="Talla"><option>S</option><option selected>M</option><option>L</option><option>XL</option></select>':'')+'<button class="btn solid" data-askm="'+i+'">Preguntar por este modelo</button><button class="addlink" data-add="'+i+'">+ Agregar a cotización</button></article>';
 }
 function norm(t){return t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")}
 function lgErr(i){var L=cands(i.dataset.n,["png","svg","webp","jpg"]),k=+(i.dataset.k||0)+1;if(k<L.length){i.dataset.k=k;i.src=L[k]}else i.remove()}
 function imgOk(i){i.parentNode.classList.add("has")}
-function imgErr(i){if(!i.dataset.n){i.remove();return}var L=cands(i.dataset.n,["jpg","png","webp","jpeg","jpg.png"]),k=+(i.dataset.k||0)+1;if(k<L.length){i.dataset.k=k;i.src=L[k]}else i.remove()}
+function imgErr(i){var p=i.parentNode;i.remove();if(p)p.classList.add("nof")}
+var FOUND={},PEND={},EX=["jpg","png","webp","jpeg","jpg.png"];
+function apply(el,u){if(!el.isConnected)return;if(u)el.src=u;else{el.parentNode.classList.add("nof");el.remove()}}
+function settle(n,u){FOUND[n]=u;(PEND[n]||[]).forEach(function(el){apply(el,u)});delete PEND[n]}
+function probe(el){var n=el.dataset.n;
+ if(n in FOUND){apply(el,FOUND[n]);return}
+ if(PEND[n]){PEND[n].push(el);return}
+ PEND[n]=[el];var gi=0;
+ (function nextDir(){if(gi>=DIRS.length){settle(n,false);return}var d=DIRS[gi++],done=false,left=EX.length;
+  EX.forEach(function(e){var u=d+"/"+n+"."+e,im=new Image();im.onload=function(){if(!done){done=true;settle(n,u)}};im.onerror=function(){if(!done&&--left===0)nextDir()};im.src=u})})()}
+var imgIO=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){imgIO.unobserve(e.target);probe(e.target)}})},{rootMargin:"400px"});
+function hydrate(){document.querySelectorAll("#grid img[data-n]").forEach(function(el){var n=el.dataset.n;if(n in FOUND)apply(el,FOUND[n]);else imgIO.observe(el)})}
 function slug(n){return norm(n).replace(/\s*\d+\s?(gb|tb)$/,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")}
 function esc(t){return t.replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 function hit(x){
@@ -323,7 +339,7 @@ function renderGrid(){
   });
   if(go&&found)h='<p class="res">'+found+' resultado'+(found===1?'':'s')+' para “'+esc(q)+'”</p>'+h;
   if(!found)h='<div class="none"><p>No encontramos ese modelo en el catálogo.</p><button class="btn ghost" data-ask="1">Preguntar por WhatsApp</button></div>';
-  $("grid").innerHTML=h;
+  $("grid").innerHTML=h;hydrate();
 }
 function renderCart(){
   $("count").textContent=cart.length;
