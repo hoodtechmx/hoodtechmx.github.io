@@ -225,9 +225,9 @@ var PRODUCTOS = [
  {n:"HP Pavilion 15",c:"Laptops",e:"💻"},
  {n:"HP Victus 16",c:"Laptops",e:"💻"},
 ];
-function addP(c,list){list.forEach(function(m){m[1].forEach(function(g){PRODUCTOS.push({n:m[0]+" "+(g>=1024?g/1024+" TB":g+" GB"),c:c})})})}
+function addP(c,list){list.forEach(function(m){m[1].forEach(function(g){PRODUCTOS.push({n:m[0]+" "+(g>=1024?g/1024+" TB":g+" GB"),c:c,f:m[2]})})})}
 // [nombre, capacidades en GB]
-addP("Apple",[["iPhone 17 Pro Max",[256,512,1024,2048]],["iPhone 17 Pro",[256,512,1024]],["iPhone Air",[256,512,1024]],["iPhone 17",[256,512]],
+addP("Apple",[["iPhone 18 Pro Max",[512]],["iPhone 18 Pro",[512],"iphone-18-pro-max"],["iPhone 17 Pro Max",[256,512,1024,2048]],["iPhone 17 Pro",[256,512,1024]],["iPhone Air",[256,512,1024]],["iPhone 17",[256,512]],
 ["iPhone 16 Pro Max",[256,512,1024]],["iPhone 16 Pro",[128,256,512,1024]],["iPhone 16 Plus",[128,256,512]],["iPhone 16",[128,256,512]],
 ["iPhone 15 Pro Max",[256,512,1024]],["iPhone 15 Pro",[128,256,512,1024]],["iPhone 15 Plus",[128,256,512]],["iPhone 15",[128,256,512]],
 ["iPhone 14 Pro Max",[128,256,512,1024]],["iPhone 14 Pro",[128,256,512,1024]],["iPhone 14 Plus",[128,256,512]],["iPhone 14",[128,256,512]]]);
