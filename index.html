@@ -164,13 +164,13 @@ header{transition:transform .45s cubic-bezier(.22,.8,.25,1)}header.hdr-hide{tran
 <div class="promo">Precios y disponibilidad por WhatsApp · Envíos a todo México</div>
 <header>
   <a class="logo" href="#">HOODTECH</a>
-  <nav><a href="#tienda" data-go="Todo">Tienda</a><a href="#tienda" data-go="Apple">Apple</a><a href="#tienda" data-go="AirPods">AirPods</a><a href="#tienda" data-go="Apple Watch">Watch</a><a href="#tienda" data-go="Laptops">Laptops</a><a href="#tienda" data-go="Ropa">Ropa</a></nav>
+  <nav><a href="#tienda" data-go="Todo">Tienda</a><a href="#tienda" data-go="Apple">Apple</a><a href="#tienda" data-go="AirPods">AirPods</a><a href="#tienda" data-go="Apple Watch">Watch</a><a href="#tienda" data-go="Laptops">Laptops</a><a href="#tienda" data-go="Ropa">Ropa</a><a href="#tienda" data-go="Van Cleef">Van Cleef</a></nav>
   <button class="cartbtn" id="open"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1 12H7z"/><path d="M9 8a3 3 0 016 0"/></svg>Mi cotización <b id="count">0</b></button>
 </header>
 
 <div class="hero">
   <h1>Tecnología y moda urbana, con garantía</h1>
-  <p>Equipos Apple, AirPods, Apple Watch, Google Pixel, Lenovo y HP, además de sudaderas Essentials, STWD y BAPE Shark. Productos originales, atención directa y envíos a todo el país.</p>
+  <p>Equipos Apple, AirPods, Apple Watch, Google Pixel, Lenovo y HP, pulseras Van Cleef Alhambra, además de sudaderas Essentials, STWD y BAPE Shark. Productos originales, atención directa y envíos a todo el país.</p>
   <div class="btns"><a class="btn" href="#tienda">Ver catálogo</a><a class="btn ghost" href="#" id="cot">Cotizar por WhatsApp</a></div>
   <div class="stats" id="stats">
     <div><b id="st-models" data-count="200">200</b><span>modelos en catálogo</span></div>
@@ -247,6 +247,8 @@ addP("Celulares",[["Google Pixel 10 Pro XL",[256,512,1024]],["Google Pixel 10 Pr
 ["Google Pixel 8 Pro",[128,256,512,1024]],["Google Pixel 8",[128,256]],["Google Pixel 8a",[128,256]]]);
 ["Negra","Gris","Blanca","Beige","Azul marino"].forEach(function(col){[["Essentials Hoodie"],["Essentials Crewneck"],["Essentials Zip"],["STWD Hoodie"],["STWD Crewneck"],["STWD Zip"]].forEach(function(m){PRODUCTOS.push({n:"Sudadera "+m[0]+" "+col,c:"Ropa"})})});
 ["Negra","Gris","Azul marino","Camuflaje","Rosa"].forEach(function(col){["Pullover"].forEach(function(m){PRODUCTOS.push({n:"Sudadera BAPE Shark "+m+" "+col,c:"Ropa"})})});
+// Van Cleef: [nombre, nombre de la foto]. Pon las fotos en fotos1/ con ese nombre (jpg, png o webp)
+[["Pulsera Van Cleef Pure Alhambra 4 motivos Oro amarillo y nácar blanco VCARA36300","vancleef-vcara36300"],["Pulsera Van Cleef Vintage Alhambra 5 motivos Oro amarillo y cornalina VCARD35500","vancleef-vcard35500"],["Pulsera Van Cleef Vintage Alhambra 5 motivos Oro amarillo, malaquita y diamantes VCARO7GQ00","vancleef-vcaro7gq00"],["Pulsera Van Cleef Vintage Alhambra 5 motivos Oro amarillo y ónix VCARA41300","vancleef-vcara41300"]].forEach(function(m){PRODUCTOS.push({n:m[0],c:"Van Cleef",f:m[1]})});
 // ========================
 var CAT={
  "Apple":{a:"#e8e8ed",t:"imac",d:"iPhone, Mac, iPad"},
@@ -254,13 +256,15 @@ var CAT={
  "Apple Watch":{a:"#fb923c",t:"watch",d:"Series, Ultra y SE"},
  "Celulares":{a:"#34d399",t:"pixel",d:"Google Pixel"},
  "Laptops":{a:"#4f9dff",t:"laptop",d:"Lenovo y HP"},
- "Ropa":{a:"#ff3b4e",t:"hoodie",d:"Essentials, STWD y BAPE"}
-}, LOGO={"Apple":"apple","AirPods":"apple","Apple Watch":"apple","Celulares":"google","Laptops":"hp","Ropa":"stwd"}, CATS=["Todo","Apple","AirPods","Apple Watch","Celulares","Laptops","Ropa"], cat="Todo", sub="Todos", q="", cart=[];
+ "Ropa":{a:"#ff3b4e",t:"hoodie",d:"Essentials, STWD y BAPE"},
+ "Van Cleef":{a:"#e3c670",t:"bracelet",d:"Pulseras Alhambra"}
+}, LOGO={"Apple":"apple","AirPods":"apple","Apple Watch":"apple","Celulares":"google","Laptops":"hp","Ropa":"stwd","Van Cleef":"vancleef"}, CATS=["Todo","Apple","AirPods","Apple Watch","Celulares","Laptops","Ropa","Van Cleef"], cat="Todo", sub="Todos", q="", cart=[];
 var GRID='<svg viewBox="0 0 200 200" fill="none" stroke="#c9a24a" stroke-width="5" stroke-linejoin="round"><rect x="35" y="35" width="55" height="55" rx="8"/><rect x="110" y="35" width="55" height="55" rx="8"/><rect x="35" y="110" width="55" height="55" rx="8"/><rect x="110" y="110" width="55" height="55" rx="8"/></svg>';
-function typeOf(n){return /AirPods Max/.test(n)?"airmax":/AirPods/.test(n)?"airpods":/Apple Watch/.test(n)?"watch":/iMac/.test(n)?"imac":/Mac mini/.test(n)?"mini":/MacBook/.test(n)?"laptop":/iPad/.test(n)?"ipad":/iPhone/.test(n)?"iphone":/Pixel/.test(n)?"pixel":/Lenovo|HP/.test(n)?"laptop":"hoodie"}
+function typeOf(n){return /Van Cleef/.test(n)?"bracelet":/AirPods Max/.test(n)?"airmax":/AirPods/.test(n)?"airpods":/Apple Watch/.test(n)?"watch":/iMac/.test(n)?"imac":/Mac mini/.test(n)?"mini":/MacBook/.test(n)?"laptop":/iPad/.test(n)?"ipad":/iPhone/.test(n)?"iphone":/Pixel/.test(n)?"pixel":/Lenovo|HP/.test(n)?"laptop":"hoodie"}
 // Ilustraciones en SVG (sustituye por fotos reales con img:"fotos/archivo.jpg")
 function art(t,a,n){
  var S='<svg viewBox="0 0 200 200" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">',E='</svg>',B='stroke="#777" stroke-width="3"',F='fill="'+a+'" fill-opacity=".3"';
+ if(t==="bracelet"){var br="",bi,bx,by,bg;for(bi=0;bi<5;bi++){bg=(-90+bi*72)*Math.PI/180;bx=100+62*Math.cos(bg);by=100+62*Math.sin(bg);br+='<g transform="translate('+bx.toFixed(1)+' '+by.toFixed(1)+')"><circle cx="-8" cy="0" r="8" '+F+' stroke="#c9a24a" stroke-width="2.5"/><circle cx="8" cy="0" r="8" '+F+' stroke="#c9a24a" stroke-width="2.5"/><circle cx="0" cy="-8" r="8" '+F+' stroke="#c9a24a" stroke-width="2.5"/><circle cx="0" cy="8" r="8" '+F+' stroke="#c9a24a" stroke-width="2.5"/><circle cx="0" cy="0" r="3.5" fill="#c9a24a" stroke="none"/></g>'}return S+'<circle cx="100" cy="100" r="62" stroke="#c9a24a" stroke-width="3" stroke-dasharray="2 4"/>'+br+E}
  if(t==="imac")return S+'<rect x="30" y="36" width="140" height="92" rx="8" fill="#1b1b1b" '+B+'/><rect x="37" y="43" width="126" height="62" rx="3" '+F+'/><path d="M30 112h140" '+B+'/><path d="M88 128l-6 30M112 128l6 30M68 162h64" stroke="#777" stroke-width="5"/>'+E;
  if(t==="ipad")return S+'<rect x="50" y="26" width="100" height="148" rx="12" fill="#1b1b1b" '+B+'/><rect x="58" y="36" width="84" height="128" rx="4" '+F+'/><circle cx="100" cy="31" r="1.8" fill="#777"/>'+E;
  if(t==="iphone"||t==="pixel")return S+'<rect x="68" y="20" width="64" height="160" rx="15" fill="#1b1b1b" '+B+'/><rect x="74" y="28" width="52" height="144" rx="10" '+F+'/>'+(t==="iphone"?'<rect x="90" y="33" width="20" height="6" rx="3" fill="#000"/>':'<circle cx="100" cy="38" r="3" fill="#000"/>')+E;
@@ -286,7 +290,7 @@ function renderFilters(){
     return '<button class="tile'+(c===cat?' on':'')+'" style="--a:'+a+'" data-c="'+c+'">'+(k?art(k.t,a,c)+'<img class="lg" src="fotos1/logo-'+LOGO[c]+'.png" data-n="logo-'+LOGO[c]+'" alt="" onload="this.parentNode.classList.add(\'lh\')" onerror="lgErr(this)">':GRID)+'<h3>'+c+'</h3><small>'+(k?k.d:"Catálogo completo")+' · '+n+'</small></button>';
   }).join("");
 }
-function grp(x){var n=x.n,m=n.match(/iPhone (\d+)/);return /AirPods/.test(n)?(/Max/.test(n)?"AirPods Max":/Pro/.test(n)?"AirPods Pro":/AirPods 4/.test(n)?"AirPods 4":"AirPods 3 y 2"):/Apple Watch/.test(n)?n.match(/Series \d+|Ultra \d+|SE \d+/)[0]:m?"iPhone "+m[1]:/iPhone Air/.test(n)?"iPhone 17":/iMac/.test(n)?"iMac":/Mac mini/.test(n)?"Mac mini":/MacBook Neo/.test(n)?"MacBook Neo":/MacBook Air/.test(n)?"MacBook Air":/MacBook Pro/.test(n)?"MacBook Pro":/iPad mini/.test(n)?"iPad mini":/iPad Air/.test(n)?"iPad Air":/iPad Pro/.test(n)?"iPad Pro":/iPad/.test(n)?"iPad":(m=n.match(/Pixel (\d+)/))?"Pixel "+m[1]:/Lenovo/.test(n)?"Lenovo":/HP /.test(n)?"HP":/BAPE/.test(n)?"BAPE Shark":/Essentials/.test(n)?"Essentials":"STWD"}
+function grp(x){var n=x.n,m=n.match(/iPhone (\d+)/);return /Van Cleef/.test(n)?(/Pure/.test(n)?"Pure Alhambra":"Vintage Alhambra"):/AirPods/.test(n)?(/Max/.test(n)?"AirPods Max":/Pro/.test(n)?"AirPods Pro":/AirPods 4/.test(n)?"AirPods 4":"AirPods 3 y 2"):/Apple Watch/.test(n)?n.match(/Series \d+|Ultra \d+|SE \d+/)[0]:m?"iPhone "+m[1]:/iPhone Air/.test(n)?"iPhone 17":/iMac/.test(n)?"iMac":/Mac mini/.test(n)?"Mac mini":/MacBook Neo/.test(n)?"MacBook Neo":/MacBook Air/.test(n)?"MacBook Air":/MacBook Pro/.test(n)?"MacBook Pro":/iPad mini/.test(n)?"iPad mini":/iPad Air/.test(n)?"iPad Air":/iPad Pro/.test(n)?"iPad Pro":/iPad/.test(n)?"iPad":(m=n.match(/Pixel (\d+)/))?"Pixel "+m[1]:/Lenovo/.test(n)?"Lenovo":/HP /.test(n)?"HP":/BAPE/.test(n)?"BAPE Shark":/Essentials/.test(n)?"Essentials":"STWD"}
 function renderSubs(){
   var gs=["Todos"];
   if(cat!=="Todo")PRODUCTOS.forEach(function(x){var g=grp(x);if(x.c===cat&&gs.indexOf(g)<0)gs.push(g)});
@@ -394,7 +398,7 @@ if(st){if(RM)qa("[data-count]").forEach(count);else{qa("[data-count]").forEach(f
  var so=new IntersectionObserver(function(es){if(es[0].isIntersecting){so.disconnect();setTimeout(function(){qa("[data-count]").forEach(count)},Math.max(0,base+450-performance.now()))}},{threshold:.4});so.observe(st)}}
 /* Marquee */
 var trk=D.getElementById("trk");
-if(trk){var it=["Apple","AirPods","Apple Watch","Google Pixel","Lenovo","HP","Essentials","STWD","BAPE Shark"],mh="";for(var k=0;k<2;k++)it.forEach(function(n,i){mh+='<span class="'+(i%2?"o":"")+'">'+n+'</span><span class="d">✦</span>'});trk.innerHTML=mh}
+if(trk){var it=["Apple","AirPods","Apple Watch","Google Pixel","Lenovo","HP","Essentials","STWD","BAPE Shark","Van Cleef"],mh="";for(var k=0;k<2;k++)it.forEach(function(n,i){mh+='<span class="'+(i%2?"o":"")+'">'+n+'</span><span class="d">✦</span>'});trk.innerHTML=mh}
 /* Scroll: progreso, parallax y header que se esconde */
 var prog=D.getElementById("prog"),hd=D.querySelector("header"),hero=D.querySelector(".hero"),ly=0,tk=false;
 function onScroll(){var y=window.scrollY,mx=H.scrollHeight-innerHeight;prog.style.transform="scaleX("+(mx>0?y/mx:0)+")";
